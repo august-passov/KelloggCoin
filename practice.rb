@@ -30,8 +30,26 @@ blockchain = [
 
 # for each "wallet" you want to sum what they get and substract what they give away
 
+wallet = {}
+
 blockchain.each do |hash|
+  from = hash["from_user"]
   to = hash["to_user"]
   amount = hash["amount"]
-  puts "#{to}'s KelloggCoin balance is #{amount}"
+  
+  wallet[from] ||= 0
+  wallet[to] ||= 0
+  
+  if from.nil?
+    wallet[to] += amount
+  else
+    wallet[from] -= amount
+    wallet[to] += amount
+  end 
+end
+
+wallet.each do |user, balance|
+
+puts "#{user}'s KelloggCoin balance is #{balance}"
+
 end
